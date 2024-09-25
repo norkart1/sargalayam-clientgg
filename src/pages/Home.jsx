@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { CrudProgramContext } from "../context/programContext";
+
 import Banner from "../layouts/Banner";
 import { CrudTeamContext } from "../context/teamContext";
 import { Link } from "react-router-dom";
@@ -44,41 +44,44 @@ export default function Home() {
     fetchData();
   }, [fetchTeamData]);
 
-  
-
   return (
     <div className="container mt-5 mb-5">
       <Banner />
-      {allPrograms && <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 700 }} aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              
-              <StyledTableCell>ID</StyledTableCell>
-              <StyledTableCell>Name</StyledTableCell>
-              <StyledTableCell>Ranking</StyledTableCell>
-              <StyledTableCell>Score</StyledTableCell>
-              <StyledTableCell>Program</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {allPrograms?.map((row, index) => (
-              <StyledTableRow key={index}>
-                <Link to{`/details/${row._id}`}>
-                <StyledTableCell style={{textDecoration:"underline",cursor:"pointer"}}>{row._id}</StyledTableCell>
-                </Link>
+      {allPrograms && (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>ID</StyledTableCell>
+                <StyledTableCell>Name</StyledTableCell>
+                <StyledTableCell>Ranking</StyledTableCell>
+                <StyledTableCell>Score</StyledTableCell>
+                <StyledTableCell>Program</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {allPrograms?.map((row, index) => (
+                <StyledTableRow key={index}>
+                  <Link to={`/details/${row._id}`}>
+                    <StyledTableCell
+                      style={{ textDecoration: "underline", cursor: "pointer" }}
+                    >
+                      {row._id}
+                    </StyledTableCell>
+                  </Link>
 
-                <StyledTableCell component="th" scope="row">
-                  {row.name}
-                </StyledTableCell>
-                <StyledTableCell >{row.ranking}</StyledTableCell>
-                <StyledTableCell >{row.score}</StyledTableCell>
-                <StyledTableCell >{row.program}</StyledTableCell>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>}
+                  <StyledTableCell component="th" scope="row">
+                    {row.name}
+                  </StyledTableCell>
+                  <StyledTableCell>{row.ranking}</StyledTableCell>
+                  <StyledTableCell>{row.score}</StyledTableCell>
+                  <StyledTableCell>{row.program}</StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </div>
   );
 }
