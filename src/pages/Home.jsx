@@ -54,9 +54,8 @@ export default function Home() {
               <TableRow>
                 <StyledTableCell>ID</StyledTableCell>
                 <StyledTableCell>Name</StyledTableCell>
-                <StyledTableCell>Ranking</StyledTableCell>
-                <StyledTableCell>Score</StyledTableCell>
-                <StyledTableCell>Program</StyledTableCell>
+
+                <StyledTableCell>TotalScore</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -73,9 +72,8 @@ export default function Home() {
                   <StyledTableCell component="th" scope="row">
                     {row.name}
                   </StyledTableCell>
-                  <StyledTableCell>{row.ranking}</StyledTableCell>
-                  <StyledTableCell>{row.score}</StyledTableCell>
-                  <StyledTableCell>{row.program}</StyledTableCell>
+
+                  <StyledTableCell>{row.totalScore}</StyledTableCell>
                 </StyledTableRow>
               ))}
             </TableBody>

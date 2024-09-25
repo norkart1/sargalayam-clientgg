@@ -22,7 +22,6 @@ export const CrudProvider = ({ children }) => {
   };
 
   const getTeamById = async (id) => {
-    console.log("id", id);
     try {
       // Make GET request to fetch all teams
       const response = await axios.get(`${teamBaseUrl}/getTeamById/${id}`);

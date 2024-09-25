@@ -9,31 +9,24 @@ import { teamBaseUrl } from "../Constant/url.js";
 function Details() {
   const { id } = useParams();
   const { getTeamById } = useContext(CrudTeamContext);
-  const [teamData, setTeamData] = useState();
-
+  const [teamData, setTeamData] = useState(null);
   const [review, setReview] = useState(""); // State for review input
   const [isSubmitting, setIsSubmitting] = useState(false); // State to handle loading
 
   useEffect(() => {
-    const fechData = async () => {
-      const fetchDataById = await getTeamById(id);
-      setTeamData(fetchDataById);
+    const fetchData = async () => {
+      const data = await getTeamById(id);
+      setTeamData(data);
     };
-
-    fechData();
+    fetchData();
   }, [getTeamById, id]);
 
-  // Calculate star rating based on score and ranking
-  const calculateStarRating = (score, ranking) => {
-    // Example logic to calculate stars out of 5 based on score and ranking
-    const normalizedRanking = ranking > 10 ? 10 : ranking; // Cap ranking at 10 for this example
-    const combinedScore = (score + normalizedRanking) / 2; // Average score and ranking
-    return Math.round(combinedScore / 2); // Convert it into a 5-star rating
+  // Calculate star rating based on totalScore
+  const calculateStarRating = (totalScore) => {
+    return Math.min(5, Math.round(totalScore / 5)); // Cap the star rating at 5
   };
 
-  const starRating = teamData
-    ? calculateStarRating(teamData.score, teamData.ranking)
-    : 0;
+  const starRating = teamData ? calculateStarRating(teamData.totalScore) : 0;
 
   const submitReview = async () => {
     if (!review.trim()) {
@@ -42,7 +35,6 @@ function Details() {
     }
 
     setIsSubmitting(true); // Set loading state
-
     try {
       const response = await axios.post(`${teamBaseUrl}/submitReview`, {
         teamId: id,
@@ -63,86 +55,66 @@ function Details() {
     }
   };
 
+  console.log('teamData',teamData)
   return (
     <div
-      className="movie-details mt-5 cardshadow"
-      style={{ display: "flex", gap: "20px" }}
+      className="team-details-container"
+      style={{
+        display: "flex",
+        gap: "20px",
+        padding: "20px",
+        backgroundColor: "#1e1e2f",
+        borderRadius: "10px",
+        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+        color: "white",
+        maxWidth: "900px",
+        margin: "auto",
+      }}
     >
-      <div className="movie-image card shadow" style={{ maxWidth: "300px" }}>
-        {teamData && (
-          <img
-            src={`${imageUrl}/${teamData.image}`}
-            alt={teamData.name}
-            style={{ width: "100%", borderRadius: "10px", height: "100px" }}
-          />
-        )}
-      </div>
+      {teamData && (
+        <>
+          <div
+            className="team-image"
+            style={{
+              maxWidth: "300px",
+              textAlign: "center",
+              border: "1px solid #555",
+              borderRadius: "10px",
+              padding: "10px",
+              backgroundColor: "#2c2c3e",
+            }}
+          >
+            <img
+              src={`${imageUrl}/${teamData.image}`}
+              alt={teamData.name}
+              style={{ width: "100%", borderRadius: "10px", height: "200px" }}
+            />
+            <h2 style={{ marginTop: "10px", color: "#ffc107" }}>
+              {teamData.name}
+            </h2>
+          </div>
 
-      <div className="movie-info" style={{ flex: 1 }}>
-        {teamData && (
-          <>
-            <h1
-              style={{
-                fontSize: "2rem",
-                marginBottom: "1rem",
-                color: "crimson",
-              }}
-            >
+          <div className="team-info" style={{ flex: 1 }}>
+            <h1 style={{ fontSize: "2rem", marginBottom: "1rem" }}>
               {teamData.name}
             </h1>
 
-            <p
-              style={{
-                fontSize: "1.1rem",
-                marginBottom: "1rem",
-                color: "white",
-              }}
-            >
-              Jailer is a 2023 Indian Tamil-language action comedy film directed
-              by Nelson Dilipkumar and produced by Kalanithi Maran under Sun
-              Pictures.
-            </p>
-
-            <p
-              style={{
-                fontSize: "1.1rem",
-                marginBottom: "1rem",
-                color: "white",
-              }}
-            >
-              <strong>Release Date:</strong>{" "}
+            <p style={{ marginBottom: "0.5rem" }}>
+              <strong>Created on:</strong>{" "}
               {new Date(teamData.createdAt).toLocaleDateString()}
             </p>
 
-            <p
-              style={{
-                fontSize: "1.1rem",
-                marginBottom: "1rem",
-                color: "white",
-              }}
-            >
-              <strong>Category:</strong>{" "}
-              {teamData.isSingle ? "Single" : "Group"}
+            <p style={{ marginBottom: "0.5rem" }}>
+              <strong>Type:</strong>{" "}
+              {teamData.isSingle
+                ? "Single"
+                : teamData.isGroup
+                ? "Group"
+                : "N/A"}
             </p>
 
-            <p
-              style={{
-                fontSize: "1.1rem",
-                marginBottom: "1rem",
-                color: "white",
-              }}
-            >
-              <strong>Ranking:</strong> {teamData.ranking}
-            </p>
-
-            <p
-              style={{
-                fontSize: "1.1rem",
-                marginBottom: "1rem",
-                color: "white",
-              }}
-            >
-              <strong>Score:</strong> {teamData.score}
+            <p style={{ marginBottom: "0.5rem" }}>
+              <strong>Total Score:</strong> {teamData.totalScore}
             </p>
 
             <div
@@ -165,28 +137,41 @@ function Details() {
                   ★
                 </span>
               ))}
-              <b>
-                <p
-                  className="mt-3 ms-3 text-warning"
-                  style={{
-                    marginLeft: "10px",
-                    fontSize: "1.2rem",
-                    color: "#ffc107",
-                  }}
-                >
-                  {starRating}/5
-                </p>
-              </b>
+              <p
+                style={{
+                  marginLeft: "10px",
+                  fontSize: "1.2rem",
+                  color: "#ffc107",
+                }}
+              >
+                {starRating}/5
+              </p>
             </div>
 
-            <div className="review" style={{ marginTop: "2rem" }}>
+            <div className="programs-section">
+              <h3 style={{ marginBottom: "1rem", color: "#ffc107" }}>
+                Programs:
+              </h3>
+              <ul>
+                {teamData.programs.map((program) => (
+                  <li
+                    key={program.programId}
+                    style={{ marginBottom: "0.5rem" }}
+                  >
+                    <strong>Program ID:</strong> {program.programId} |{" "}
+                    <strong>Score:</strong> {program.score}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="review-section" style={{ marginTop: "2rem" }}>
               <label
                 htmlFor="review"
                 style={{
                   display: "block",
                   fontSize: "1.1rem",
                   marginBottom: "0.5rem",
-                  color: "white",
                 }}
               >
                 Write a review:
@@ -200,31 +185,31 @@ function Details() {
                   width: "100%",
                   padding: "10px",
                   borderRadius: "5px",
-                  border: "1px solid #ccc",
-                  fontSize: "1rem",
-                  color: "#333",
+                  border: "1px solid #555",
+                  backgroundColor: "#333",
+                  color: "#fff",
                 }}
               ></textarea>
-            </div>
 
-            <button
-              onClick={submitReview} // Submit review on click
-              style={{
-                marginTop: "1rem",
-                backgroundColor: "#007bff",
-                color: "white",
-                border: "none",
-                padding: "10px 20px",
-                borderRadius: "5px",
-                cursor: isSubmitting ? "not-allowed" : "pointer", // Disable button while submitting
-              }}
-              disabled={isSubmitting} // Disable button when submitting
-            >
-              {isSubmitting ? "Submitting..." : "Send"}
-            </button>
-          </>
-        )}
-      </div>
+              <button
+                onClick={submitReview}
+                style={{
+                  marginTop: "1rem",
+                  backgroundColor: "#007bff",
+                  color: "white",
+                  border: "none",
+                  padding: "10px 20px",
+                  borderRadius: "5px",
+                  cursor: isSubmitting ? "not-allowed" : "pointer",
+                }}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Submitting..." : "Send"}
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
