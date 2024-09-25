@@ -3,7 +3,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import logo from '../assets/logo.jpg'
 import ProgramMove from "./movingPrograms";
-import { CrudProgramContext } from "../context/teamContext";
+import { CrudProgramContext } from "../context/programContext";
 import { useContext, useEffect, useState } from "react";
 
 function Header() {

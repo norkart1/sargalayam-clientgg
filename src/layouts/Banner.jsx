@@ -46,14 +46,14 @@ export default function Banner() {
         <Row className="mt-7">
           <Col>
             <div className="landing-hero">
-              <div style={{ opacity: ".7" }}>
+              {/* <div style={{ opacity: ".7" }}>
                 <SpinningImage
-                  src={`${process.env.PUBLIC_URL}/banner_coin.png`}
+                  src={'/logo.jpg'}
                   className="img-fluid rotating-btc"
                   alt="logo"
                 />
-              </div>
-              <div className="offset-md-2 col-md-8 text-center">
+              </div> */}
+              <div className="offset-md-2 col-md-8 text-center mt-5">
                 <h2 className="mb-4">A trusted and secure cryptocurrency exchange.</h2>
                 <p>
                   Crypto is the most advanced UI kit for making the Blockchain
@@ -111,7 +111,7 @@ export default function Banner() {
                       >
                         <MDBCardImage
                           fluid
-                          src={`${process.env.PUBLIC_URL}/market-share-competitor-excellent-growing-with-stocks.jpg`}
+                          src={`/logo.jpg`}
                           style={{
                             borderTopLeftRadius: "8px",
                             borderTopRightRadius: "8px",
@@ -149,7 +149,7 @@ export default function Banner() {
                                 width:"100%",
                                 borderEndStartRadius: "8px",
                               }}
-                              src={`${process.env.PUBLIC_URL}/learn_all_img2.png`}
+                              src={`/logo.jpg`}
                               fluid
                             />
                           </Col>
@@ -179,7 +179,7 @@ export default function Banner() {
                           <Col sm={6} >
                             <MDBCardImage
                               fluid
-                              src={`${process.env.PUBLIC_URL}/9978009.jpg`}
+                              src={`/logo.jpg`}
                               style={{ borderEndStartRadius: "8px" }}
                             />
                           </Col>

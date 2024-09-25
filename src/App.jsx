@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Header from "./layouts/Header";
 import { Route, Routes } from "react-router-dom";
 import Details from "./pages/DetailPage";
+import Footer from "./layouts/Footer";
 
 function App() {
   return (
@@ -14,8 +15,9 @@ function App() {
       <br />
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/details" element={<Details />}></Route>
+        <Route path="/details/:id" element={<Details />}></Route>
       </Routes>
+      <Footer />
     </>
   );
 }

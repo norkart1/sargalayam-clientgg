@@ -1,38 +1,51 @@
-import { createContext } from "react";
-import { teamBaseUrl } from "../Constant/url";
-import axios from "axios";
+import { createContext, useState, useEffect } from 'react'
+import { teamBaseUrl, imageUrl } from '../Constant/url'
+import axios from 'axios'
 
-export const CrudProgramContext = createContext();
 
-export const ProgramCrudProvider = ({ children }) => {
-  // Function to fetch all programs
-  const fetchPrograms = async () => {
-    console.log("try to fetch");
+export const CrudTeamContext = createContext()
 
+export const CrudProvider = ({ children }) => {
+  const [teams, setTeams] = useState([])
+
+   
+  // Function to fetch all Teams
+  const fetchTeamData = async () => {
     try {
-      // Make GET request to fetch all programs
-      const response = await axios.get(`${teamBaseUrl}/getAllPrograms`);
-
-      console.log("respon", response);
+      // Make GET request to fetch all teams
+      const response = await axios.get(`${teamBaseUrl}/getAllTeams`)
       if (response.status !== 200) {
-        throw new Error("Failed to fetch programs");
+        throw new Error('Failed to fetch teams')
       }
-      console.log("resposen", response.data);
 
-      return response.data;
+      
+
+      // Extract data from response
+      const teams = response.data
+
+      // Optionally transform data logic
+      const transformedTeams = teams.map((team) => ({
+        ...teams,
+        image: team.image ? `${imageUrl}/${team.image}` : null,
+        //createdAt: new Date(team.createdAt).toLocaleString(),
+        monthYear: new Date(team.createdAt).toLocaleString('default', { month: 'short' }) + ' ' + new Date(team.createdAt).getFullYear(),
+      }))
+  
+
+      return response.data
     } catch (error) {
-      console.error("Error fetching programs:", error);
-      throw error; // Rethrow the error to handle it where the function is called
+      console.error('Error fetching teams:', error)
+      throw error // Rethrow the error to handle it where the function is called
     }
-  };
+  }
 
+   
   const contextValue = {
-    fetchPrograms,
-  };
+     
+    teams,
+    fetchTeamData,
+    
+  }
 
-  return (
-    <CrudProgramContext.Provider value={contextValue}>
-      {children}
-    </CrudProgramContext.Provider>
-  );
-};
+  return <CrudTeamContext.Provider value={contextValue}>{children}</CrudTeamContext.Provider>
+}

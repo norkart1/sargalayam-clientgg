@@ -1,0 +1,26 @@
+
+
+.footer-right-side-icon .fab {
+    font-size: 1.125rem;
+  }
+  
+  .footer-right-side-icon .fab:hover {
+    color: rgba(232,13,15,255);
+  }
+  
+  .elementor-icon-list-text {
+    color: rgb(104, 104, 104);
+    font-weight: 500;
+    font-size: 1rem;
+  }
+  
+  .elementor-icon-list-text:hover {
+    color: black;
+  }
+  
+  .footer-desc {
+    color: rgb(104, 104, 104);
+    font-weight: 400;
+    font-size: large;
+  }
+  

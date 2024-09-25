@@ -3,15 +3,17 @@ import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
-import { ProgramCrudProvider } from "./context/teamContext.jsx";
+import { CrudProvider } from "./context/teamContext.jsx";
+import {ProgramCrudProvider} from './context/programContext.jsx'
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ProgramCrudProvider>
-      {" "}
+      <CrudProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
+      </CrudProvider>    
     </ProgramCrudProvider>
   </StrictMode>
 );

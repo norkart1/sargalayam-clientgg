@@ -7,8 +7,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { CrudProgramContext } from "../context/teamContext";
+import { CrudProgramContext } from "../context/programContext";
 import Banner from "../layouts/Banner";
+import { CrudTeamContext } from "../context/teamContext";
+import { Link } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -31,48 +33,52 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function Home() {
-  const { fetchPrograms } = React.useContext(CrudProgramContext);
+  const { fetchTeamData } = React.useContext(CrudTeamContext);
   const [allPrograms, setAllPrograms] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const fetchedData = await fetchPrograms();
+      const fetchedData = await fetchTeamData();
       setAllPrograms(fetchedData);
     };
     fetchData();
-  }, [fetchPrograms]);
+  }, [fetchTeamData]);
 
   
 
   return (
-    <div className="container">
+    <div className="container mt-5 mb-5">
       <Banner />
-      <TableContainer component={Paper}>
+      {allPrograms && <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-              <StyledTableCell align="right">Calories</StyledTableCell>
-              <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-              <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-              <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+              
+              <StyledTableCell>ID</StyledTableCell>
+              <StyledTableCell>Name</StyledTableCell>
+              <StyledTableCell>Ranking</StyledTableCell>
+              <StyledTableCell>Score</StyledTableCell>
+              <StyledTableCell>Program</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {allPrograms?.map((row, index) => (
               <StyledTableRow key={index}>
-                <StyledTableCell align="right">{row._id}</StyledTableCell>
+                <Link to{`/details/${row._id}`}>
+                <StyledTableCell style={{textDecoration:"underline",cursor:"pointer"}}>{row._id}</StyledTableCell>
+                </Link>
+
                 <StyledTableCell component="th" scope="row">
                   {row.name}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.ranking}</StyledTableCell>
-                <StyledTableCell align="right">{row.program}</StyledTableCell>
-                <StyledTableCell align="right">{row.score}</StyledTableCell>
+                <StyledTableCell >{row.ranking}</StyledTableCell>
+                <StyledTableCell >{row.score}</StyledTableCell>
+                <StyledTableCell >{row.program}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
+      </TableContainer>}
     </div>
   );
 }
