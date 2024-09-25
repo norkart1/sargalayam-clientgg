@@ -46,7 +46,7 @@ export default function Home() {
 
   return (
     <div className="container mt-5 mb-5">
-      <Banner />
+      {/* <Banner /> */}
       {allPrograms && (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
