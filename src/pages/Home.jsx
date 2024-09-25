@@ -40,10 +40,19 @@ export default function Home() {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      setLoading(true); // Set loading to true before fetching data
       const fetchedData = await fetchTeamData();
-      setAllPrograms(fetchedData);
-      setLoading(false); // Set loading to false after data is fetched
+
+      // Sort teams based on total score in descending order
+      const sortedTeams = fetchedData.sort((a, b) => b.totalScore - a.totalScore);
+
+      // Assign ranking based on the sorted order
+      const rankedTeams = sortedTeams.map((team, index) => ({
+        ...team,
+        ranking: index + 1, // Assign rank based on position
+      }));
+
+      setAllPrograms(rankedTeams);
+      setLoading(false); // Set isLoading to false after fetching data
     };
     fetchData();
   }, [fetchTeamData]);
@@ -84,6 +93,7 @@ export default function Home() {
               <TableRow>
                 <StyledTableCell>ID</StyledTableCell>
                 <StyledTableCell>Name</StyledTableCell>
+                <StyledTableCell>Rank</StyledTableCell>
                 <StyledTableCell>Total Score</StyledTableCell>
               </TableRow>
             </TableHead>
@@ -100,6 +110,7 @@ export default function Home() {
                   <StyledTableCell component="th" scope="row">
                     {row.name}
                   </StyledTableCell>
+                  <StyledTableCell>{row.ranking}</StyledTableCell>
                   <StyledTableCell>{row.totalScore}</StyledTableCell>
                 </StyledTableRow>
               ))}
