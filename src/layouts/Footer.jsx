@@ -42,9 +42,7 @@ export default function Footer(props) {
                     Dr. Janaki Ammal Campus
                   </h6>
                   <p className="footer-desc">
-                    Welcome to our trading site! We offer the best, most
-                    affordable products and services around. Shop now and start
-                    finding great deals!
+                    Welcome to our Campus which makes beauty!
                   </p>
                 </div>
                 {/* Grid column */}

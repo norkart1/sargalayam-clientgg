@@ -44,7 +44,7 @@ function Header() {
               >
                 Home
               </Nav.Link>
-              <Nav.Link
+              {/* <Nav.Link
                 style={{ fontSize: "19px" }}
                 className="text-white me-3"
                 href="#allteams"
@@ -57,7 +57,7 @@ function Header() {
                 href="/managewatchlist"
               >
                 Manage Watchlist
-              </Nav.Link>
+              </Nav.Link> */}
             </Nav>
             {/* <Form className="d-flex">
 
