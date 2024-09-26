@@ -122,9 +122,9 @@ function Details() {
             }
           }}
         />
-        <h2 style={{ marginTop: "12px", color: "#ffc107", fontWeight: "bold" }}>
+        {/* <h2 style={{ marginTop: "12px", color: "#ffc107", fontWeight: "bold" }}>
           {teamData.name}
-        </h2>
+        </h2> */}
       </div>
 
       <div className="team-info" style={{ flex: 1, padding: "0 16px" }}>
@@ -139,7 +139,7 @@ function Details() {
             paddingBottom: "10px"
           }}
         >
-          {teamData.name}
+        Team  <span style={{textDecoration:"underline"}}>{teamData.name}</span>
         </h1>
 
         <p style={{ marginBottom: "0.7rem", fontSize: "1rem", color: "#ccc" }}>
@@ -168,23 +168,70 @@ function Details() {
         </div>
 
         <div className="programs-section" style={{ marginTop: "24px" }}>
-          <h3 style={{ marginBottom: "1rem", color: "#ffc107", borderBottom: "2px solid #ffc107", paddingBottom: "8px" }}>
-            Programs:
-          </h3>
-          <ul style={{ paddingLeft: "20px", color: "#ccc" }}>
-            {teamData.programs.map((program, index) => (
-              <li key={index} style={{ marginBottom: "0.8rem", padding: "12px", backgroundColor: "#29293b", borderRadius: "8px" }}>
-                <strong>Program ID:</strong> {program.programId._id.length > 5 ? `${program.programId._id.slice(0, 5)}*****` : program.programId._id}
-                <br />
-                <strong style={{ color: "yellow" }}>Program Name:</strong> {program.programId.value}
-                <br />
-                <strong style={{ color: "red" }}>Score:</strong> {program.score}
-                <br />
-                <strong style={{ color: "green" }}>Rank:</strong> {program.rank}
-              </li>
-            ))}
-          </ul>
+  <h3
+    style={{
+      marginBottom: "1.5rem",
+      color: "#00D1B2", // Teal color for the heading
+      borderBottom: "2px solid #00D1B2",
+      paddingBottom: "10px",
+      textAlign: "center",
+      fontSize: "1.8rem",
+      letterSpacing: "0.5px",
+    }}
+  >
+    Programs
+  </h3>
+  
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+      gap: "16px",
+      paddingLeft: "10px",
+    }}
+  >
+    {teamData.programs.map((program, index) => (
+      <div
+        key={index}
+        style={{
+          padding: "16px",
+          backgroundColor: "#1F2937", // Darker background
+          borderRadius: "10px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          transition: "transform 0.3s ease",
+          border: "1px solid #4B5563",
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-5px)")}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
+      >
+        <div style={{ color: "#9CA3AF", marginBottom: "8px" }}>
+          <strong>Program ID:</strong>{" "}
+          {program.programId._id.length > 5
+            ? `${program.programId._id.slice(0, 5)}*****`
+            : program.programId._id}
         </div>
+        <div style={{ color: "#00D1B2", marginBottom: "8px", fontWeight: "600" }}>
+          <strong>Program Name:</strong> {program.programId.value}
+        </div>
+        <div style={{ color: "#F3F4F6", marginBottom: "8px" }}>
+          <strong>Type:</strong>{" "}
+          {program.isSingle ? (
+            <span style={{ color: "#22C55E" }}>Single Item</span>
+          ) : (
+            <span style={{ color: "#EF4444" }}>Group Item</span>
+          )}
+        </div>
+        <div style={{ marginBottom: "8px", color: "#FBBF24", fontWeight: "600" }}>
+          <strong>Score:</strong> {program.score}
+        </div>
+        <div style={{ color: "#10B981", fontWeight: "600" }}>
+          <strong>Rank:</strong> {program.rank}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
       </div>
     </>
   )}
