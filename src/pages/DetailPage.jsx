@@ -44,6 +44,8 @@ function Details() {
   const starRating = teamData ? calculateStarRating(teamData.totalScore) : 0;
   const rank = teamData ? calculateRank(teamData.totalScore) : 0;
 
+  console.log('teamData',teamData)
+
   const submitReview = async () => {
     if (!review.trim()) {
       alert("Please write a review before submitting.");
@@ -73,104 +75,121 @@ function Details() {
 
   return (
     <div
-      className="team-details-container"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
-        padding: "20px",
-        backgroundColor: "#1e1e2f",
-        borderRadius: "10px",
-        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
-        color: "white",
-        maxWidth: "900px",
-        margin: "auto",
-        transition: "transform 0.2s",
-      }}
-    >
-      {teamData && (
-        <>
-          <div
-            className="team-image"
-            style={{
-              maxWidth: "300px",
-              textAlign: "center",
-              border: "1px solid #555",
-              borderRadius: "10px",
-              padding: "10px",
-              backgroundColor: "#2c2c3e",
-            }}
-          >
-            <img
-              src={`${imageUrl}/${teamData.image}`}
-              alt={teamData.name}
-              style={{ width: "100%", borderRadius: "10px", height: "200px", objectFit: "cover" }}
-            />
-            <h2 style={{ marginTop: "10px", color: "#ffc107" }}>
-              {teamData.name}
-            </h2>
-          </div>
+  className="team-details-container"
+  style={{
+    display: "flex",
+    flexDirection: "column",
+    gap: "24px",
+    padding: "24px",
+    backgroundColor: "#1e1e2f",
+    borderRadius: "12px",
+    boxShadow: "0 6px 20px rgba(0, 0, 0, 0.25)",
+    color: "#ffffff",
+    maxWidth: "900px",
+    margin: "40px auto",
+    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+    ":hover": {
+      transform: "scale(1.02)",
+      boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3)"
+    }
+  }}
+>
+  {teamData && (
+    <>
+      <div
+        className="team-image"
+        style={{
+          maxWidth: "300px",
+          textAlign: "center",
+          border: "1px solid #444",
+          borderRadius: "10px",
+          padding: "12px",
+          backgroundColor: "#29293b",
+          margin: "auto"
+        }}
+      >
+        <img
+          src={`${imageUrl}/${teamData.image}`}
+          alt={teamData.name}
+          style={{
+            width: "100%",
+            borderRadius: "8px",
+            height: "220px",
+            objectFit: "cover",
+            transition: "transform 0.3s ease",
+            ":hover": {
+              transform: "scale(1.05)"
+            }
+          }}
+        />
+        <h2 style={{ marginTop: "12px", color: "#ffc107", fontWeight: "bold" }}>
+          {teamData.name}
+        </h2>
+      </div>
 
-          <div className="team-info" style={{ flex: 1 }}>
-            <h1 style={{ fontSize: "2rem", marginBottom: "1rem", textAlign: "center" }}>
-              {teamData.name}
-            </h1>
+      <div className="team-info" style={{ flex: 1, padding: "0 16px" }}>
+        <h1
+          style={{
+            fontSize: "2.4rem",
+            marginBottom: "1.2rem",
+            textAlign: "center",
+            fontWeight: "bold",
+            color: "#ffc107",
+            borderBottom: "2px solid #ffc107",
+            paddingBottom: "10px"
+          }}
+        >
+          {teamData.name}
+        </h1>
 
-            <p style={{ marginBottom: "0.5rem" }}>
-              <strong>Created on:</strong> {new Date(teamData.createdAt).toLocaleDateString()}
-            </p>
+        <p style={{ marginBottom: "0.7rem", fontSize: "1rem", color: "#ccc" }}>
+          <strong style={{ color: "#ff9800" }}>Created on:</strong> {new Date(teamData.createdAt).toLocaleDateString()}
+        </p>
 
-            {/* <p style={{ marginBottom: "0.5rem" }}>
-              <strong>Type:</strong> {teamData.isSingle ? "Single" : teamData.isGroup ? "Group" : "N/A"}
-            </p> */}
+        <p style={{ marginBottom: "0.7rem", fontSize: "1rem", color: "#ccc" }}>
+          <strong style={{ color: "#ff9800" }}>Total Score:</strong> {teamData.totalScore}
+        </p>
 
-            <p style={{ marginBottom: "0.5rem" }}>
-              <strong>Total Score:</strong> {teamData.totalScore}
-            </p>
+        <div className="rating" style={{ display: "flex", alignItems: "center", marginBottom: "1.2rem" }}>
+          {[1, 2, 3, 4, 5].map((starValue) => (
+            <span
+              key={starValue}
+              style={{
+                fontSize: "1.6rem",
+                cursor: "pointer",
+                color: starRating >= starValue ? "gold" : "#444",
+                transition: "color 0.3s ease"
+              }}
+            >
+              ★
+            </span>
+          ))}
+          <p style={{ marginLeft: "12px", fontSize: "1.3rem", color: "#ffc107" }}>{starRating}/5</p>
+        </div>
 
-            {/* <p style={{ marginBottom: "0.5rem" }}>
-              <strong>Rank:</strong> {rank}
-            </p> */}
+        <div className="programs-section" style={{ marginTop: "24px" }}>
+          <h3 style={{ marginBottom: "1rem", color: "#ffc107", borderBottom: "2px solid #ffc107", paddingBottom: "8px" }}>
+            Programs:
+          </h3>
+          <ul style={{ paddingLeft: "20px", color: "#ccc" }}>
+            {teamData.programs.map((program, index) => (
+              <li key={index} style={{ marginBottom: "0.8rem", padding: "12px", backgroundColor: "#29293b", borderRadius: "8px" }}>
+                <strong>Program ID:</strong> {program.programId._id.length > 5 ? `${program.programId._id.slice(0, 5)}*****` : program.programId._id}
+                <br />
+                <strong style={{ color: "yellow" }}>Program Name:</strong> {program.programId.value}
+                <br />
+                <strong style={{ color: "red" }}>Score:</strong> {program.score}
+                <br />
+                <strong style={{ color: "green" }}>Rank:</strong> {program.rank}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </>
+  )}
+</div>
 
-            <div className="rating" style={{ display: "flex", alignItems: "center", marginBottom: "1rem" }}>
-              {[1, 2, 3, 4, 5].map((starValue) => (
-                <span
-                  key={starValue}
-                  style={{
-                    fontSize: "1.5rem",
-                    cursor: "pointer",
-                    color: starRating >= starValue ? "gold" : "gray",
-                    transition: "color 0.2s",
-                  }}
-                >
-                  ★
-                </span>
-              ))}
-              <p style={{ marginLeft: "10px", fontSize: "1.2rem", color: "#ffc107" }}>
-                {starRating}/5
-              </p>
-            </div>
-
-            <div className="programs-section">
-              <h3 style={{ marginBottom: "1rem", color: "#ffc107" }}>
-                Programs:
-              </h3>
-              <ul style={{ paddingLeft: "20px" }}>
-                {teamData.programs.map((program, index) => (
-                  <li key={index} style={{ marginBottom: "0.5rem" }}>
-                    <strong>Program ID:</strong> {program.programId._id.length > 5 ? `${program.programId._id.slice(0, 5)}*****` : program.programId._id} |{" "}
-                    <br />
-                    <strong style={{ color: "yellow" }}>Program Name:</strong> {program.programId.value}{" "}
-                    <br />
-                    <strong style={{ color: "red" }}>Score:</strong> {program.score}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
   );
 }
 
