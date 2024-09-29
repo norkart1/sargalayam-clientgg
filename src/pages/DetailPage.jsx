@@ -1,10 +1,11 @@
 import { useParams } from "react-router-dom";
-import { Button } from "react-bootstrap";
+
 import { useContext, useState, useEffect } from "react";
 import { CrudTeamContext } from "../context/teamContext";
 import { imageUrl } from "../Constant/url";
 import axios from "axios";
 import { teamBaseUrl } from "../Constant/url.js";
+import Pagination from "./pagination.jsx";
 
 function Details() {
   const { id } = useParams();
@@ -12,6 +13,17 @@ function Details() {
   const [teamData, setTeamData] = useState(null);
   const [review, setReview] = useState(""); // State for review input
   const [isSubmitting, setIsSubmitting] = useState(false); // State to handle loading
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6; // Change this value to control how many programs to show per page
+
+  const totalPrograms = teamData.programs?.length || 0;
+  const totalPages = Math.ceil(totalPrograms / itemsPerPage);
+
+  const currentPrograms = teamData.programs?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -200,85 +212,91 @@ function Details() {
             </div>
 
             <div className="programs-section" style={{ marginTop: "24px" }}>
-              <h3
-                style={{
-                  marginBottom: "1.5rem",
-                  color: "#00D1B2", // Teal color for the heading
-                  borderBottom: "2px solid #00D1B2",
-                  paddingBottom: "10px",
-                  textAlign: "center",
-                  fontSize: "1.8rem",
-                  letterSpacing: "0.5px",
-                }}
-              >
-                Programs
-              </h3>
+      <h3
+        style={{
+          marginBottom: "1.5rem",
+          color: "#00D1B2",
+          borderBottom: "2px solid #00D1B2",
+          paddingBottom: "10px",
+          textAlign: "center",
+          fontSize: "1.8rem",
+          letterSpacing: "0.5px",
+        }}
+      >
+        Programs
+      </h3>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-                  gap: "16px",
-                  paddingLeft: "10px",
-                }}
-              >
-                {teamData.programs?.map((program, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      padding: "16px",
-                      backgroundColor: "#1F2937", // Darker background
-                      borderRadius: "10px",
-                      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                      transition: "transform 0.3s ease",
-                      border: "1px solid #4B5563",
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.transform = "translateY(-5px)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.transform = "translateY(0)")
-                    }
-                  >
-                    <div style={{ color: "#9CA3AF", marginBottom: "8px" }}>
-                      <strong>Program ID:</strong>{" "}
-                      {program.programId?._id.length > 5
-                        ? `${program.programId?._id.slice(0, 5)}*****`
-                        : program.programId?._id}
-                    </div>
-                    <div
-                      style={{
-                        color: "#00D1B2",
-                        marginBottom: "8px",
-                        fontWeight: "600",
-                      }}
-                    >
-                      <strong>Program Name:</strong> {program.programId?.value}
-                    </div>
-                    <div style={{ color: "#F3F4F6", marginBottom: "8px" }}>
-                      <strong>Type:</strong>{" "}
-                      {program.isSingle ? (
-                        <span style={{ color: "#22C55E" }}>Single Item</span>
-                      ) : (
-                        <span style={{ color: "#EF4444" }}>Group Item</span>
-                      )}
-                    </div>
-                    <div
-                      style={{
-                        marginBottom: "8px",
-                        color: "#FBBF24",
-                        fontWeight: "600",
-                      }}
-                    >
-                      <strong>Score:</strong> {program.score}
-                    </div>
-                    <div style={{ color: "#10B981", fontWeight: "600" }}>
-                      <strong>Rank:</strong> {program.rank}
-                    </div>
-                  </div>
-                ))}
-              </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+          gap: "16px",
+          paddingLeft: "10px",
+        }}
+      >
+        {currentPrograms?.map((program, index) => (
+          <div
+            key={index}
+            style={{
+              padding: "16px",
+              backgroundColor: "#1F2937",
+              borderRadius: "10px",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              transition: "transform 0.3s ease",
+              border: "1px solid #4B5563",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform = "translateY(-5px)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.transform = "translateY(0)")
+            }
+          >
+            <div style={{ color: "#9CA3AF", marginBottom: "8px" }}>
+              <strong>Program ID:</strong>{" "}
+              {program.programId?._id.length > 5
+                ? `${program.programId?._id.slice(0, 5)}*****`
+                : program.programId?._id}
             </div>
+            <div
+              style={{
+                color: "#00D1B2",
+                marginBottom: "8px",
+                fontWeight: "600",
+              }}
+            >
+              <strong>Program Name:</strong> {program.programId?.value}
+            </div>
+            <div style={{ color: "#F3F4F6", marginBottom: "8px" }}>
+              <strong>Type:</strong>{" "}
+              {program.isSingle ? (
+                <span style={{ color: "#22C55E" }}>Single Item</span>
+              ) : (
+                <span style={{ color: "#EF4444" }}>Group Item</span>
+              )}
+            </div>
+            <div
+              style={{
+                marginBottom: "8px",
+                color: "#FBBF24",
+                fontWeight: "600",
+              }}
+            >
+              <strong>Score:</strong> {program.score}
+            </div>
+            <div style={{ color: "#10B981", fontWeight: "600" }}>
+              <strong>Rank:</strong> {program.rank}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <Pagination
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      />
+    </div>
           </div>
         </>
       )}
