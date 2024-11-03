@@ -44,34 +44,9 @@ function Header() {
               >
                 Home
               </Nav.Link>
-              {/* <Nav.Link
-                style={{ fontSize: "19px" }}
-                className="text-white me-3"
-                href="#allteams"
-              >
-                All Teams
-              </Nav.Link>
-              <Nav.Link
-                style={{ fontSize: "19px" }}
-                className="text-white me-3"
-                href="/managewatchlist"
-              >
-                Manage Watchlist
-              </Nav.Link> */}
+              
             </Nav>
-            {/* <Form className="d-flex">
-
-            <Form.Control
-              type="search"
-              placeholder="Search movies"
-              className="search me-2"
-              aria-label="Search "
-              style={{borderRadius:'10px'}}
-            />
-
-            <Button variant="outline-success">Search</Button>
-
-          </Form>  */}
+             
           </Navbar.Collapse>
         </Container>
       </Navbar>
