@@ -15,20 +15,31 @@ function Details() {
   const [isSubmitting, setIsSubmitting] = useState(false); // State to handle loading
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading,setLoading] = useState(true);
   const itemsPerPage = 6; // Change this value to control how many programs to show per page
 
-  const totalPrograms = teamData.programs?.length || 0;
+  const totalPrograms = teamData?.programs?.length || 0;
   const totalPages = Math.ceil(totalPrograms / itemsPerPage);
 
-  const currentPrograms = teamData.programs?.slice(
+  const currentPrograms = teamData?.programs?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getTeamById(id);
+      try {
+        const data = await getTeamById(id);
+
+        if(!data) {
+          throw new Error("No team data available")
+        }
       setTeamData(data);
+      } catch (error) {
+        console.error('Error fetch data',error)
+      }finally{
+        setLoading(false)
+      }
     };
     fetchData();
   }, [getTeamById, id]);
@@ -56,7 +67,7 @@ function Details() {
   const starRating = teamData ? calculateStarRating(teamData.totalScore) : 0;
   const rank = teamData ? calculateRank(teamData.totalScore) : 0;
 
-  console.log("teamData", teamData);
+  
 
   const submitReview = async () => {
     if (!review.trim()) {

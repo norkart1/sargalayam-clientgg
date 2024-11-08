@@ -39,10 +39,10 @@ export default function Footer(props) {
                   {/* Content */}
                   <h6 className="text-uppercase fw-bold mb-4">
                     <i className="fas fa-gem me-3" />
-                    Dr. Janaki Ammal Campus
+                    Sargalayam 2024
                   </h6>
                   <p className="footer-desc">
-                    Welcome to our Campus which makes beauty!
+                    Welcome to our Sargalayam which makes beauty!
                   </p>
                 </div>
                 {/* Grid column */}
@@ -108,12 +108,11 @@ export default function Footer(props) {
                 <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
                   <h6 className="text-uppercase fw-bold mb-4">Contact</h6>
                   <p>
-                    <i className="fas fa-home me-3" /> Dr. Janaki Ammal Campus
-                    Library, P.O. Palayad - 670661: address
+                    <i className="fas fa-home me-3" /> Sargalayam 2024
                   </p>
                   <p>
                     <i className="fas fa-envelope me-3" />
-                    altly@kannuruniv.ac.in
+                    https://online.samastha.info/
                   </p>
                   <p>
                     <i className="fas fa-phone me-3" /> 0490-2347140
@@ -128,16 +127,13 @@ export default function Footer(props) {
           <div className="container">
             <hr />
             <div className="justify-content-between d-lg-flex d-sm-block p-4">
-              <div className="footer-left-side-text">
-                {" "}
-                © 2024 Copyright:
-                <a
-                  className="ms-2 text-reset fw-bold"
-                  href="https://mdbootstrap.com/"
-                >
-                  Dr. Janaki Ammal Campus Library, Palayad
-                </a>
-              </div>
+            <div className="ms-auto">
+        <span className="me-1">Powered by</span>
+        <a href="https://corvoso.vercel.app/" target="_blank" rel="noopener noreferrer">
+        &copy; <span id="copyright-year"></span> Corvoso Technologies All rights reserved.
+        </a>
+        
+      </div>
 
               <div className="footer-right-side-icon">
                 <a href="" className="ms-3 me-4 text-reset">

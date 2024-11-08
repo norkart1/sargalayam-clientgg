@@ -9,10 +9,14 @@ import {
   TableRow,
   Paper,
   Skeleton,
+  Container,
+  Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { CrudTeamContext } from "../context/teamContext";
+
+import './style.css'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -37,6 +41,7 @@ export default function Home() {
   const { fetchTeamData } = React.useContext(CrudTeamContext);
   const [allPrograms, setAllPrograms] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -58,66 +63,71 @@ export default function Home() {
   }, [fetchTeamData]);
 
   return (
-    <div className="container mt-5 mb-5">
+    <Container sx={{ mt: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        Results
+      </Typography>
       {loading ? (
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell>ID</StyledTableCell>
-                <StyledTableCell>Name</StyledTableCell>
-                <StyledTableCell>Total Score</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {Array.from(new Array(5)).map((_, index) => (
-                <StyledTableRow key={index}>
-                  <StyledTableCell>
-                    <Skeleton variant="text" width={100} />
-                  </StyledTableCell>
-                  <StyledTableCell>
-                    <Skeleton variant="text" width={200} />
-                  </StyledTableCell>
-                  <StyledTableCell>
-                    <Skeleton variant="text" width={100} />
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      ) : (
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell>ID</StyledTableCell>
-                <StyledTableCell>Name</StyledTableCell>
-                <StyledTableCell>Rank</StyledTableCell>
-                <StyledTableCell>Total Score</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {allPrograms.map((row) => (
-                <StyledTableRow key={row._id}>
+      <TableContainer component={Paper} className="responsive-table-container">
+        <Table aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>ID</StyledTableCell>
+              <StyledTableCell>Name</StyledTableCell>
+              <StyledTableCell>Total Score</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {Array.from(new Array(5)).map((_, index) => (
+              <StyledTableRow key={index}>
+                <StyledTableCell>
+                  <Skeleton variant="text" width={100} />
+                </StyledTableCell>
+                <StyledTableCell>
+                  <Skeleton variant="text" width={200} />
+                </StyledTableCell>
+                <StyledTableCell>
+                  <Skeleton variant="text" width={100} />
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    ) : error ? (
+      <div className="error-message">
+        <p>Failed to load data: {error}</p>
+      </div>
+    ) : (
+      <TableContainer component={Paper} className="responsive-table-container">
+        <Table aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>ID</StyledTableCell>
+              <StyledTableCell>Name</StyledTableCell>
+              <StyledTableCell>Rank</StyledTableCell>
+              <StyledTableCell>Total Score</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {allPrograms.map((row) => (
+              <StyledTableRow key={row._id}>
+                <StyledTableCell>
                   <Link to={`/details/${row._id}`}>
-                    <StyledTableCell
-                      style={{ textDecoration: "underline", cursor: "pointer" }}
-                    >
+                    <span style={{ textDecoration: "underline", cursor: "pointer" }}>
                       {row._id}
-                    </StyledTableCell>
+                    </span>
                   </Link>
-                  <StyledTableCell component="th" scope="row">
-                    {row.name}
-                  </StyledTableCell>
-                  <StyledTableCell>{row.ranking}</StyledTableCell>
-                  <StyledTableCell>{row.totalScore}</StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
-    </div>
+                </StyledTableCell>
+                <StyledTableCell>{row.name}</StyledTableCell>
+                <StyledTableCell>{row.ranking}</StyledTableCell>
+                <StyledTableCell>{row.totalScore}</StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    )}
+    </Container>
   );
 }
