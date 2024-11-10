@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import './style.css'
 
 const Pagination = ({ totalPages, currentPage, onPageChange }) => {
   const handleClick = (page) => {
@@ -7,31 +8,64 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
     }
   };
 
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+
+    const startPage = Math.max(1, currentPage - 2);
+    const endPage = Math.min(totalPages, currentPage + 2);
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(
+        <button
+          key={i}
+          onClick={() => handleClick(i)}
+          className={`pagination-button ${currentPage === i ? "active" : ""}`}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    return pageNumbers;
+  };
+
   return (
-    <div style={{ textAlign: "center", marginTop: "20px" }}>
+    <div className="container pagination-container">
       <button
         onClick={() => handleClick(currentPage - 1)}
         disabled={currentPage === 1}
-        style={{ margin: "0 5px" }}
+        className="pagination-button prev-next"
       >
         Previous
       </button>
-      {Array.from({ length: totalPages }, (_, index) => (
-        <button
-          key={index + 1}
-          onClick={() => handleClick(index + 1)}
-          style={{
-            margin: "0 5px",
-            fontWeight: currentPage === index + 1 ? "bold" : "normal",
-          }}
-        >
-          {index + 1}
-        </button>
-      ))}
+
+      {currentPage > 3 && (
+        <>
+          <button onClick={() => handleClick(1)} className="pagination-button">
+            1
+          </button>
+          {currentPage > 4 && <span className="dots">...</span>}
+        </>
+      )}
+
+      {renderPageNumbers()}
+
+      {currentPage < totalPages - 2 && (
+        <>
+          {currentPage < totalPages - 3 && <span className="dots">...</span>}
+          <button
+            onClick={() => handleClick(totalPages)}
+            className="pagination-button"
+          >
+            {totalPages}
+          </button>
+        </>
+      )}
+
       <button
         onClick={() => handleClick(currentPage + 1)}
         disabled={currentPage === totalPages}
-        style={{ margin: "0 5px" }}
+        className="pagination-button prev-next"
       >
         Next
       </button>

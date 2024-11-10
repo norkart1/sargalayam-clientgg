@@ -17,6 +17,7 @@ import { tableCellClasses } from "@mui/material/TableCell";
 import { CrudTeamContext } from "../context/teamContext";
 
 import './style.css'
+import Pagination from "./pagination";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -42,6 +43,7 @@ export default function Home() {
   const [allPrograms, setAllPrograms] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
+  const [currentPage, setCurrentPage] = React.useState(1);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -61,6 +63,23 @@ export default function Home() {
     };
     fetchData();
   }, [fetchTeamData]);
+
+  const formatId = (id) => {
+    if (!id) return "";
+    const visiblePart = id.slice(0, 10); // Show the first 5 characters
+    return `${visiblePart}************`;
+  };
+  
+
+  const itemsPerPage = 6; // Change this value to control how many programs to show per page
+
+  const totalTeams = allPrograms?.length || 0;
+  const totalPages = Math.ceil(totalTeams / itemsPerPage);
+
+  const currentTeam = allPrograms?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <Container sx={{ mt: 4 }}>
@@ -110,12 +129,12 @@ export default function Home() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {allPrograms.map((row) => (
+            {currentTeam.map((row) => (
               <StyledTableRow key={row._id}>
                 <StyledTableCell>
                   <Link to={`/details/${row._id}`}>
                     <span style={{ textDecoration: "underline", cursor: "pointer" }}>
-                      {row._id}
+                      {formatId(row._id)}
                     </span>
                   </Link>
                 </StyledTableCell>
@@ -128,6 +147,13 @@ export default function Home() {
         </Table>
       </TableContainer>
     )}
+
+    <Pagination
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      />
     </Container>
   );
 }
+

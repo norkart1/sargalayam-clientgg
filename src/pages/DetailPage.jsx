@@ -2,10 +2,11 @@ import { useParams } from "react-router-dom";
 
 import { useContext, useState, useEffect } from "react";
 import { CrudTeamContext } from "../context/teamContext";
-import { imageUrl } from "../Constant/url";
+import logo  from "./logo.jpg";
 import axios from "axios";
 import { teamBaseUrl } from "../Constant/url.js";
 import Pagination from "./pagination.jsx";
+import { CircularProgress } from "@mui/material";
 
 function Details() {
   const { id } = useParams();
@@ -117,8 +118,16 @@ function Details() {
         },
       }}
     >
-      {teamData && (
-        <>
+    {loading ? <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "300px",
+          }}
+        >
+          <CircularProgress style={{ color: "#ffc107" }} />
+        </div> : <>
           <div
             className="team-image"
             style={{
@@ -132,7 +141,7 @@ function Details() {
             }}
           >
             <img
-              src={`${imageUrl}/${teamData.image}`}
+              src={logo}
               alt={teamData.name}
               style={{
                 width: "100%",
@@ -145,9 +154,9 @@ function Details() {
                 },
               }}
             />
-            {/* <h2 style={{ marginTop: "12px", color: "#ffc107", fontWeight: "bold" }}>
+            <h2 style={{ marginTop: "12px", color: "#ffc107", fontWeight: "bold" }}>
           {teamData.name}
-        </h2> */}
+        </h2>
           </div>
 
           <div className="team-info" style={{ flex: 1, padding: "0 16px" }}>
@@ -309,8 +318,7 @@ function Details() {
       />
     </div>
           </div>
-        </>
-      )}
+        </>}
     </div>
   );
 }
